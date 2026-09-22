@@ -1,0 +1,155 @@
+88. Merge Sorted Array
+
+class Solution {
+    public void merge(int[] nums1, int m, int[] nums2, int n) {
+        int midx = m - 1;
+        int nidx = n - 1;
+        int right = m + n - 1;
+
+        while (nidx >= 0) {
+            if (midx >= 0 && nums1[midx] > nums2[nidx]) {
+                nums1[right] = nums1[midx];
+                midx--;
+            } else {
+                nums1[right] = nums2[nidx];
+                nidx--;
+            }
+            right--;
+        }        
+    }
+}
+
+
+
+912. Sort an Array
+
+class Solution {
+
+    public int[] sortArray(int[] nums) {
+
+        mergeSort(nums, 0, nums.length - 1);
+        return nums;
+    }
+
+    private void mergeSort(int[] arr, int low, int high) {
+
+        if (low >= high)
+            return;
+
+        // Find mid index
+        int mid = (low + high) / 2;
+
+        // Sort left half
+        mergeSort(arr, low, mid);
+
+        // Sort right half
+        mergeSort(arr, mid + 1, high);
+
+        // Merge both halves
+        merge(arr, low, mid, high);
+    }
+
+    // Merge two sorted halves
+    private void merge(int[] arr, int low, int mid, int high) {
+
+        int[] temp = new int[high - low + 1];
+
+        int left = low;
+        int right = mid + 1;
+        int k = 0;
+
+        // Merge both halves
+        while (left <= mid && right <= high) {
+
+            if (arr[left] <= arr[right])
+                temp[k++] = arr[left++];
+            else
+                temp[k++] = arr[right++];
+        }
+
+        // Remaining left elements
+        while (left <= mid)
+            temp[k++] = arr[left++];
+
+        // Remaining right elements
+        while (right <= high)
+            temp[k++] = arr[right++];
+
+        // Copy back to original array
+        for (int i = 0; i < temp.length; i++)
+            arr[low + i] = temp[i];
+    }
+}
+
+
+
+215. Kth Largest Element in an Array
+
+public class Solution {
+    public int findKthLargest(int[] nums, int k) {
+        Arrays.sort(nums);
+        return nums[nums.length - k];
+    }
+}
+
+
+
+53. Maximum Subarray
+class Solution {
+    public int maxSubArray(int[] nums) {
+        int res = nums[0];
+        int total = 0;
+
+        for (int n : nums) {
+            if (total < 0) {
+                total = 0;
+            }
+
+            total += n;
+            res = Math.max(res, total);
+        }
+
+        return res;        
+    }
+}
+
+
+
+
+4. Median of Two Sorted Arrays
+
+import java.util.Arrays;
+
+class Solution {
+    public double findMedianSortedArrays(int[] nums1, int[] nums2) {
+        // Get the sizes of both input arrays.
+        int n = nums1.length;
+        int m = nums2.length;
+
+        // Merge the arrays into a single sorted array.
+        int[] merged = new int[n + m];
+        int k = 0;
+        for (int i = 0; i < n; i++) {
+            merged[k++] = nums1[i];
+        }
+        for (int i = 0; i < m; i++) {
+            merged[k++] = nums2[i];
+        }
+
+        // Sort the merged array.
+        Arrays.sort(merged);
+
+        // Calculate the total number of elements in the merged array.
+        int total = merged.length;
+
+        if (total % 2 == 1) {
+            // If the total number of elements is odd, return the middle element as the median.
+            return (double) merged[total / 2];
+        } else {
+            // If the total number of elements is even, calculate the average of the two middle elements as the median.
+            int middle1 = merged[total / 2 - 1];
+            int middle2 = merged[total / 2];
+            return ((double) middle1 + (double) middle2) / 2.0;
+        }
+    }
+}
